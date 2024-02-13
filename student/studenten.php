@@ -59,7 +59,6 @@ if ($count_records>0) { // wel studenten ophalen
     }
 }
 $table_student = $table_header . $contentTable . "</table>";
-
 echo $table_student;
 ?>
 

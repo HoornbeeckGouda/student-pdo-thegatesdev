@@ -55,7 +55,7 @@ values
 ('Tamara', 'ter', 'Schuur', 'Mozartstraat 22', '3388XX', 'Amsterdam', 'tamka@hotmail.com', 'T4I2AD', '2002-10-30'),
 ('Arnold', NULL, 'Shaw', 'Kruislaan 1', '9876FF', 'Rotterdam', 'asha@roc.nl', 'T4I2AD', '2001-10-06');
 INSERT INTO vak
-(afkorting, naam)
+(id, afkorting, naam)
 values
 (1, 'PGB', 'Programmeren Backend'),
 (2, 'DAB', 'Databases'),
