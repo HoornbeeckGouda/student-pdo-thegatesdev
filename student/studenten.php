@@ -2,9 +2,6 @@
 $header_title = "Studenten";
 include("parts/header.php");
 
-// initialiseren/declareren
-$contentTable = "";
-//tabelkop samenstellen
 $table_header = '<table id="students">
                     <tr>
                         <th>studentnr</th>
@@ -33,15 +30,15 @@ $qry_student = "SELECT
                         ORDER BY achternaam, voornaam;";
 $prepared_query = $dbconn->prepare($qry_student);
 // gegevens query ophalen uit db student
-try{
-    $prepared_query->execute();
+try {
+    if (!$prepared_query->execute()) throw new PDOException();
     $prepared_query->setFetchMode(PDO::FETCH_ASSOC);
-}catch(PDOException $e){
+} catch (PDOException $e) {
     echo "<h1>Query failed</h1>";
     exit;
 }
 
-foreach($prepared_query as $row){
+foreach ($prepared_query as $row) {
     $contentTable .= "<tr>
                             <td>" . $row['id'] . "</td>
                             <td>" . $row['voornaam'] . "</td>
@@ -62,4 +59,5 @@ echo $table_student;
 
 
 </body>
+
 </html>

@@ -2,18 +2,29 @@
     border-collapse: collapse;
     width: 100%;
 }
-#students td, #students th {
-    border: 1px solid #ddd;
+
+#students td,
+#students th {
     padding: 8px;
 }
-#students tr:nth-child(even){background-color: #f2f2f2;}
 
-#students tr:hover {background-color: aqua;}
+#students tr {
+    background-color: #180303;
+    transition: background-color 50ms;
+}
+
+#students tr:nth-child(even) {
+    background-color: #290505;
+}
+
+#students tr:hover {
+    background-color: #692316;
+}
 
 #customers th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: beige;
+    background-color: #180303;
     color: white;
 }
