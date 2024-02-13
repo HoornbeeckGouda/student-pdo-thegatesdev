@@ -10,7 +10,7 @@
 
 #students tr {
     background-color: #180303;
-    transition: background-color 50ms;
+    transition: background-color 300ms ease-out;
 }
 
 #students tr:nth-child(even) {
@@ -19,6 +19,7 @@
 
 #students tr:hover {
     background-color: #692316;
+    transition: none;
 }
 
 #customers th {
