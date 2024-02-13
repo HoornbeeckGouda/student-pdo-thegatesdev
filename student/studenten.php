@@ -38,6 +38,7 @@ try {
     exit;
 }
 
+$contentTable = "";
 foreach ($prepared_query as $row) {
     $contentTable .= "<tr>
                             <td>" . $row['id'] . "</td>
