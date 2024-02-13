@@ -31,12 +31,18 @@ $qry_student = "SELECT
                         geboortedatum
                         FROM student
                         ORDER BY achternaam, voornaam;";
+$prepared_query = $dbconn->prepare($qry_student);
 // gegevens query ophalen uit db student
-$result = mysqli_query($dbconn, $qry_student);
-$count_records = mysqli_num_rows($result);
-if ($count_records>0) { // wel studenten ophalen
-    while ($row=mysqli_fetch_array($result)) {
-        $contentTable .= "<tr>
+try{
+    $prepared_query->execute();
+    $prepared_query->setFetchMode(PDO::FETCH_ASSOC);
+}catch(PDOException $e){
+    echo "<h1>Query failed</h1>";
+    exit;
+}
+
+foreach($prepared_query as $row){
+    $contentTable .= "<tr>
                             <td>" . $row['id'] . "</td>
                             <td>" . $row['voornaam'] . "</td>
                             <td>" . $row['tussenvoegsel'] . "</td>
@@ -48,8 +54,8 @@ if ($count_records>0) { // wel studenten ophalen
                             <td>" . $row['klas'] . "</td>
                             <td>" . $row['geboortedatum'] . "</td>
                         </tr>";
-    }
 }
+
 $table_student = $table_header . $contentTable . "</table>";
 echo $table_student;
 ?>
