@@ -1,6 +1,13 @@
 <?php
+session_start();
+if (!isset($_SESSION["user"])){
+    header("Location:index.php");
+    exit;
+}
+
 $header_title = "Studenten";
 include("parts/header.php");
+include("conn/database.php");
 
 $table_header = '<table id="students">
                     <tr>
@@ -56,9 +63,5 @@ foreach ($prepared_query as $row) {
 
 $table_student = $table_header . $contentTable . "</table>";
 echo $table_student;
-?>
 
-
-</body>
-
-</html>
+include("parts/footer.php");

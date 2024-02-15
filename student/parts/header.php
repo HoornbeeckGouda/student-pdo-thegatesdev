@@ -1,6 +1,3 @@
-<?php
-include 'conn/database.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 
