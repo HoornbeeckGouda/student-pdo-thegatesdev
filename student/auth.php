@@ -31,6 +31,7 @@ if (isset($_POST["login"])) {
     }
 }
 
+$header_title = "Inloggen";
 include("parts/header.php");
 ?>
 
