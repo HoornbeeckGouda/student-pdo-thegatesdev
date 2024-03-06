@@ -65,4 +65,22 @@ class StudentConnection
         }
         return "$building_table</table>";
     }
+
+    public function changeStudent(int $student_id, $voornaam, $tussenvoegsel, $achternaam, $straat, $postcode, $woonplaats, $email, $klas, $geboortedatum): bool
+    {
+        $statement = $this->pdo->prepare("UPDATE $this->student_table_name SET 
+        voornaam= ?,
+        tussenvoegsel= ?,
+        achternaam= ?,
+        straat= ?,
+        postcode= ?,
+        woonplaats= ?,
+        email= ?,
+        klas= ?,
+        geboortedatum= ?
+        WHERE id = ?
+        ");
+        $params = [$voornaam, $tussenvoegsel, $achternaam, $straat, $postcode, $woonplaats, $email, $klas, $geboortedatum, $student_id];
+        return $statement->execute($params);
+    }
 }
