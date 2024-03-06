@@ -23,6 +23,7 @@ $building_table = "<table id='students'>
             <th>email</th>
             <th>klas</th>
             <th>geboortedatum</th>
+            <th>action</th>
         </tr>";
 foreach ($studentConn->getFullStudentArray() as $row) {
     $building_table .= "<tr>
