@@ -18,7 +18,6 @@ if (isset($_POST["login"])) {
         if ($data_row === false){
             $page_msg = "Gebruiker of wachtwoord onjuist!";
         }else{
-            echo $data_row[0];
             $valid = password_verify($input_passsword, $data_row[0]);
             if ($valid){
                 $_SESSION["user"] = $input_username;
