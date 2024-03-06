@@ -13,4 +13,4 @@ include "conn/StudentConnection.php";
 $studentConn = new StudentConnection($dbconn);
 echo $studentConn->getFullStudentHTMLTable();
 
-include("parts/footer.php");
+include "parts/footer.php";
