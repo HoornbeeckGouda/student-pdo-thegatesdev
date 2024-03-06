@@ -1,6 +1,6 @@
 body {
     min-height: 100vh;
-    background: linear-gradient(#070318, #04010e);
+    background: linear-gradient(90deg, #070318, #04010e);
     color: azure;
     margin: 0;
 }
