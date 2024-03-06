@@ -31,7 +31,7 @@ class StudentConnection
         geboortedatum
         FROM student
         ORDER BY achternaam, voornaam;");
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_BOTH);
     }
 
     public function getFullStudentHTMLTable(): string
@@ -82,5 +82,25 @@ class StudentConnection
         ");
         $params = [$voornaam, $tussenvoegsel, $achternaam, $straat, $postcode, $woonplaats, $email, $klas, $geboortedatum, $student_id];
         return $statement->execute($params);
+    }
+
+    public function getStudentRow(int $student_id): array | false{
+        $statement = $this->pdo->prepare("SELECT 
+        id,
+        voornaam,
+        tussenvoegsel,
+        achternaam,
+        straat,
+        postcode,
+        woonplaats,
+        email,
+        klas,
+        geboortedatum
+        FROM student
+        WHERE id= ?
+        LIMIT 1
+        ");
+        $statement->execute([$student_id]);
+        return $statement->fetch(PDO::FETCH_BOTH);
     }
 }
