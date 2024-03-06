@@ -36,6 +36,7 @@ foreach ($studentConn->getFullStudentArray() as $row) {
                             <td>" . $row['email'] . "</td>
                             <td>" . $row['klas'] . "</td>
                             <td>" . $row['geboortedatum'] . "</td>
+                            <td><a href='editstudent.php?id={$row['id']}'>EDIT</a></td>
                         </tr>";
 }
 echo "$building_table</table>";
