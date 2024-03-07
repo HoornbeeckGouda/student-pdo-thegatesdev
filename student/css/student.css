@@ -1,31 +1,23 @@
-#students {
+.datatable {
     border-collapse: collapse;
     width: 100%;
 }
 
-#students td,
-#students th {
+.datatable td,
+.datatable th {
     padding: 8px;
 }
 
-#students tr {
+.datatable tr {
     background-color: #180303;
     transition: background-color 300ms ease-out;
 }
 
-#students tr:nth-child(even) {
+.datatable tr:nth-child(even) {
     background-color: #290505;
 }
 
-#students tr:hover {
+.datatable tr:hover {
     background-color: #692316;
     transition: none;
-}
-
-#customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #180303;
-    color: white;
 }

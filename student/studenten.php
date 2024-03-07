@@ -9,9 +9,9 @@ $header_title = "Studenten";
 include "parts/header.php";
 include "conn/database.php";
 include "conn/StudentConnection.php";
-
 $studentConn = new StudentConnection($dbconn);
-$building_table = "<table id='students'>
+
+$building_table = "<table class='datatable'>
         <tr>
             <th>studentnr</th>
             <th>voornaam</th>
