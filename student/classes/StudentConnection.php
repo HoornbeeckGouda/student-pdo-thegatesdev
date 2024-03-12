@@ -1,10 +1,5 @@
 <?php
 
-function queryOrFalse(PDO $pdo, PDOStatement $statement): PDOStatement|false
-{
-    return $statement->execute() ? $statement : false;
-}
-
 class StudentConnection
 {
     public static string $student_table_name = "student";
@@ -14,20 +9,46 @@ class StudentConnection
     ];
     private readonly PDO $pdo;
 
+    private PDOStatement $statChangeStudent, 
+    $statGetStudentRow, 
+    $statGetFullStudentArray;
+
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
 
-    public function getFullStudentArray(): array
+    public function getFullStudentArray(): array | false
     {
-        $statement = $this->pdo->query($this->getFullStudentArrayQuery());
+        $statement = $this->getFullStudentArrayQuery();
+        if ($statement === false) return false;
+
+        if ($statement->execute() == false) return false;
         return $statement->fetchAll(PDO::FETCH_BOTH);
     }
+    
+    public function changeStudent(int $student_id, array $allparams): bool
+    {
+        if (sizeof($allparams) != sizeof(StudentConnection::$editable_student_data)) throw new Exception("Invalid parameter count, expected " . sizeof($allparams) . " got " . sizeof(StudentConnection::$editable_student_data));
+        $statement = $this->changeStudentQuery();
+        if ($statement === false) return false;
 
-    private function getFullStudentArrayQuery(): string{
-        return "SELECT 
+        return $statement->execute([...array_values($allparams), $student_id]);
+    }
+
+    public function getStudentRow(int $student_id): array | false{
+        $statement = $this->getStudentRowQuery();
+        if ($statement === false) return false;
+
+        if ($statement->execute([$student_id]) === false) return false;
+        return $statement->fetch(PDO::FETCH_BOTH);
+    }
+    
+
+    private function getFullStudentArrayQuery(): PDOStatement | false{
+        return $this->statGetFullStudentArray ??= 
+        $this->pdo->prepare("SELECT 
         id,
         voornaam,
         tussenvoegsel,
@@ -39,19 +60,13 @@ class StudentConnection
         klas,
         geboortedatum
         FROM student
-        ORDER BY achternaam, voornaam;";
+        ORDER BY achternaam, voornaam;");
     }
 
-    public function changeStudent(int $student_id, array $allparams): bool
-    {
-        if (sizeof($allparams) != sizeof(StudentConnection::$editable_student_data)) throw new Exception("Invalid parameter count, expected " . sizeof($allparams) . " got " . sizeof(StudentConnection::$editable_student_data));
-        $statement = $this->pdo->prepare($this->changeStudentQuery());
-        return $statement->execute([...array_values($allparams), $student_id]);
-    }
-
-    private function changeStudentQuery(): string{
+    private function changeStudentQuery(): PDOStatement | false{
         $table_name = StudentConnection::$student_table_name;
-        return "UPDATE $table_name SET 
+        return $this->statChangeStudent ??= 
+        $this->pdo->prepare("UPDATE $table_name SET 
         voornaam= ?,
         tussenvoegsel= ?,
         achternaam= ?,
@@ -61,17 +76,12 @@ class StudentConnection
         email= ?,
         klas= ?,
         geboortedatum= ?
-        WHERE id = ?";
+        WHERE id = ?");
     }
 
-    public function getStudentRow(int $student_id): array | false{
-        $statement = $this->pdo->prepare($this->getStudentRowQuery());
-        $statement->execute([$student_id]);
-        return $statement->fetch(PDO::FETCH_BOTH);
-    }
-
-    private function getStudentRowQuery(): string{
-        return "SELECT 
+    private function getStudentRowQuery(): PDOStatement | false{
+        return $this->statGetStudentRow ??=
+        $this->pdo->prepare("SELECT 
         voornaam,
         tussenvoegsel,
         achternaam,
@@ -83,6 +93,6 @@ class StudentConnection
         geboortedatum
         FROM student
         WHERE id= ?
-        LIMIT 1";
+        LIMIT 1");
     }
 }
