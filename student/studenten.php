@@ -8,7 +8,7 @@ if (!isset($_SESSION["user"])) {
 $header_title = "Studenten";
 include "parts/header.php";
 include "conn/database.php";
-include "conn/StudentConnection.php";
+include "classes/StudentConnection.php";
 $studentConn = new StudentConnection($dbconn);
 
 $building_table = "<table class='datatable'>

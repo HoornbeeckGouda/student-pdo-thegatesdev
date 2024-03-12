@@ -22,7 +22,12 @@ class StudentConnection
 
     public function getFullStudentArray(): array
     {
-        $statement = $this->pdo->query("SELECT 
+        $statement = $this->pdo->query($this->getFullStudentArrayQuery());
+        return $statement->fetchAll(PDO::FETCH_BOTH);
+    }
+
+    private function getFullStudentArrayQuery(): string{
+        return "SELECT 
         id,
         voornaam,
         tussenvoegsel,
@@ -34,15 +39,19 @@ class StudentConnection
         klas,
         geboortedatum
         FROM student
-        ORDER BY achternaam, voornaam;");
-        return $statement->fetchAll(PDO::FETCH_BOTH);
+        ORDER BY achternaam, voornaam;";
     }
 
     public function changeStudent(int $student_id, array $allparams): bool
     {
-        $table_name = StudentConnection::$student_table_name;
         if (sizeof($allparams) != sizeof(StudentConnection::$editable_student_data)) throw new Exception("Invalid parameter count, expected " . sizeof($allparams) . " got " . sizeof(StudentConnection::$editable_student_data));
-        $statement = $this->pdo->prepare("UPDATE $table_name SET 
+        $statement = $this->pdo->prepare($this->changeStudentQuery());
+        return $statement->execute([...array_values($allparams), $student_id]);
+    }
+
+    private function changeStudentQuery(): string{
+        $table_name = StudentConnection::$student_table_name;
+        return "UPDATE $table_name SET 
         voornaam= ?,
         tussenvoegsel= ?,
         achternaam= ?,
@@ -52,13 +61,17 @@ class StudentConnection
         email= ?,
         klas= ?,
         geboortedatum= ?
-        WHERE id = ?
-        ");
-        return $statement->execute([...array_values($allparams), $student_id]);
+        WHERE id = ?";
     }
 
     public function getStudentRow(int $student_id): array | false{
-        $statement = $this->pdo->prepare("SELECT 
+        $statement = $this->pdo->prepare($this->getStudentRowQuery());
+        $statement->execute([$student_id]);
+        return $statement->fetch(PDO::FETCH_BOTH);
+    }
+
+    private function getStudentRowQuery(): string{
+        return "SELECT 
         voornaam,
         tussenvoegsel,
         achternaam,
@@ -70,9 +83,6 @@ class StudentConnection
         geboortedatum
         FROM student
         WHERE id= ?
-        LIMIT 1
-        ");
-        $statement->execute([$student_id]);
-        return $statement->fetch(PDO::FETCH_BOTH);
+        LIMIT 1";
     }
 }

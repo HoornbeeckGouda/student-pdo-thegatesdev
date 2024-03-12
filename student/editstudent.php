@@ -14,7 +14,7 @@ if (!isset($_GET["id"])){
 $header_title = "Studenten";
 include "parts/header.php";
 include "conn/database.php";
-include "conn/StudentConnection.php";
+include "classes/StudentConnection.php";
 $studentConn = new StudentConnection($dbconn);
 
 $student_id = $_GET["id"];
